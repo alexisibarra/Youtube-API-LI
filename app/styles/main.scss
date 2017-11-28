@@ -1,22 +1,5 @@
 $icon-font-path: '../fonts/';
-// bower:scss
-@import "bower_components/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
-// endbower
 
-.container{
-  width: 1070px;
-}
+@import '../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap';
 
-.television-item {
-  height: 450px;
-//   overflow: hidden;
-//   position: relative;
-
-  iframe {
-    height: 100%;
-    // left: 0;
-    // position: absolute;
-    // top: 0;
-    width: 100%;
-  }
-}
+@import '3-modules/television';
