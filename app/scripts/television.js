@@ -126,8 +126,13 @@ function loadPlaylists(){
 
 function getPlaylistItem(item, index){
   return `
-    <div class="video-item">
-      <img onClick="changePlaylist(${index})" class="img-responsive" src="${item.items[0].snippet.thumbnails.standard.url}">      
+    <div class="playlist-item">
+      <div class="wrapper" onClick="changePlaylist(${index})">
+        <img onClick="changePlaylist(${index})" class="img-responsive" src="${item.items[0].snippet.thumbnails.standard.url}"> 
+        <div class="overlay">
+          <p>${playlists[index].name}</p>
+        </div>     
+      </div>     
     </div>
   `
 }
@@ -150,8 +155,9 @@ $(document).ready(function(){
     $('.owl-carousel').owlCarousel({
       autoplay: true,
       items: 3,
-      autoplayTimeout:5000,
+      autoplayTimeout: 2000,
       autoplayHoverPause: true,
+      pauseOnHover: true, 
       dotsEach: true,
       nav: true,
       loop: true,
