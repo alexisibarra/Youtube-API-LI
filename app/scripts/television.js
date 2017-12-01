@@ -2,6 +2,7 @@ var youtubeKey = 'AIzaSyCKpXRxL4LysV2gtUYmjt_RlIPHfMp8674';
 var laIguanaChannelId = 'UUCc2H9_eNnU7ucq2n7Sh3Rg';
 
 var currentPlaylist = [];
+var allPlaylists = [];
 
 var playlists = [
   { 
@@ -96,13 +97,13 @@ function getRelatedItem(item, index){
 }
 
 function changePlayer(index){
-  console.log(currentPlaylist[index].snippet.title);
-
   $('#player').html(getMainPlayer(index));  
 }
 
-function loadPlayer() {
-  $('#player').html(getMainPlayer(0));
+function loadPlayer(index) {
+  currentPlaylist = allPlaylists[index].items;
+  
+  $('#player').html(getMainPlayer(index));
 
   var related = '';
   
@@ -113,23 +114,48 @@ function loadPlayer() {
   $('#related').html(related);
 }
 
-$(document).ready(function(){    
-  getVids(playlists[0].id)
-    .done(function(data){
-      console.log(data)
-      currentPlaylist = data.items;
+function changePlaylist(index){
+  loadPlayer(index);
+}
 
-      loadPlayer();
-    }).then(function(){
-      $('.owl-carousel').owlCarousel({
-        autoplay: true,
-        items: 3,
-        autoplayTimeout:5000,
-        autoplayHoverPause: true,
-        dotsEach: true,
-        nav: true,
-        loop: true,
-        dots: false
-      });
-    })
+function loadPlaylists(){
+  allPlaylists.map(function(item, index){
+    return loadPlaylistItem(item, index);
+  })
+}
+
+function getPlaylistItem(item, index){
+  return `
+    <div class="video-item">
+      <img onClick="changePlaylist(${index})" class="img-responsive" src="${item.items[0].snippet.thumbnails.standard.url}">      
+    </div>
+  `
+}
+
+function loadPlaylistItem(item, index){
+  $('#related-playlists').append(getPlaylistItem(item, index));
+}
+
+$(document).ready(function(){  
+  Promise.all(playlists.map( function(playlist){
+    return getVids(playlist.id)
+  }))
+  .then(function(results){
+    allPlaylists = results;
+    loadPlayer(0);
+    
+    loadPlaylists();
+  })
+  .then(function(){
+    $('.owl-carousel').owlCarousel({
+      autoplay: true,
+      items: 3,
+      autoplayTimeout:5000,
+      autoplayHoverPause: true,
+      dotsEach: true,
+      nav: true,
+      loop: true,
+      dots: false
+    });
+  })
 })
