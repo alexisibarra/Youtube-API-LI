@@ -80,16 +80,22 @@ function getVids(pid){
 
 function getMainPlayer(index){
   var item = currentPlaylist[index];
-  return '<iframe src="https://www.youtube.com/embed/'+ item.snippet.resourceId.videoId +'" frameborder="0" allowfullscreen></iframe>';
+  var videoSource = `https://www.youtube.com/embed/${item.snippet.resourceId.videoId}`;
+  // <iframe src="${videoSource}" frameborder="0" allowfullscreen></iframe>
+  return `
+    <div class="embed-responsive embed-responsive-16by9">
+      <iframe class="embed-responsive-item" src="${videoSource}" allowfullscreen></iframe>
+    </div>
+  `;
 }
 
 function getRelatedItem(item, index){
   return `
     <div class="video-item row" onClick="changePlayer(${index})">
-      <div class="col-xs-5">
+      <div class="image col-xs-3">
         <img class="img-responsive" src="${item.snippet.thumbnails.default.url}">
       </div>
-      <p class="col-xs-7 title">
+      <p class="col-xs-9 title">
         ${item.snippet.title}
       </p>    
     </div>
@@ -103,7 +109,7 @@ function changePlayer(index){
 function loadPlayer(index) {
   currentPlaylist = allPlaylists[index].items;
   
-  $('#player').html(getMainPlayer(index));
+  $('#player').html(getMainPlayer(0));
 
   var related = '';
   
@@ -154,6 +160,7 @@ $(document).ready(function(){
   .then(function(){
     $('.owl-carousel').owlCarousel({
       autoplay: true,
+      navText: ['<','>'],      
       items: 3,
       autoplayTimeout: 2000,
       autoplayHoverPause: true,
