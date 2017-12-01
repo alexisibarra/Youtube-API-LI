@@ -81,7 +81,6 @@ function getVids(pid){
 function getMainPlayer(index){
   var item = currentPlaylist[index];
   var videoSource = `https://www.youtube.com/embed/${item.snippet.resourceId.videoId}`;
-  // <iframe src="${videoSource}" frameborder="0" allowfullscreen></iframe>
   return `
     <div class="embed-responsive embed-responsive-16by9">
       <iframe class="embed-responsive-item" src="${videoSource}" allowfullscreen></iframe>
